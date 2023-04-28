@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import LoadingSpinner from "../components/loading";
+import LoadingPage from "../components/loading";
 
 dayjs.extend(relativeTime);
 
@@ -17,11 +17,11 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
   return (
-    <div className="flex-col-2 flex gap-4 rounded-md border border-lime-200 p-2">
+    <div className="flex-col-2 flex gap-1 rounded-md border border-lime-200 p-1">
       <div>
         {user.fullName}
         <Image
-          className="h-24 w-24 rounded-full"
+          className="rounded-full"
           src={user.profileImageUrl}
           alt="Profile image"
           width={56}
@@ -30,7 +30,7 @@ const CreatePostWizard = () => {
       </div>
       <div className="flex w-3/4 flex-col">
         <input
-          className=" m-2  h-12 grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
+          className=" m-1  h-12 grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
           placeholder="Type message"
         />
         <button>Post</button>
@@ -45,7 +45,7 @@ const PostView = (props: PostwithUser) => {
   console.log(post);
   return (
     <div
-      className="m-4 flex gap-1 rounded-md border-y border-lime-400 bg-gray-900 bg-opacity-40 p-5 text-left"
+      className="m-1 flex gap-1 rounded-md border-y border-lime-400 bg-gray-900 bg-opacity-40 p-1 text-left"
       key={post.id}
     >
       <div className="">
@@ -67,18 +67,25 @@ const PostView = (props: PostwithUser) => {
     </div>
   );
 };
+const Feed = () => {
+  const { data, isLoading: postsLoading } = api.posts.getAll.useQuery();
 
+  if (postsLoading) return <LoadingPage />;
+  if (!data) return <div>Something went wrong</div>;
+  return (
+    <div className="flex flex-col">
+      {[...data, ...data]?.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost.post.id} />
+      ))}
+    </div>
+  );
+};
 const Home: NextPage = () => {
-  const user = useUser();
+  const { isLoaded: userLoaded, isSignedIn } = useUser();
 
-  const { data, isLoading } = api.posts.getAll.useQuery();
-
-  if (!data || isLoading)
-    return (
-      <div className="absolute right-0 top-0 flex h-screen w-screen items-center justify-center align-middle">
-        <LoadingSpinner />
-      </div>
-    );
+  api.posts.getAll.useQuery();
+  //return empty div if user isn't loaded yet
+  if (!userLoaded) return <div />;
 
   return (
     <>
@@ -90,22 +97,18 @@ const Home: NextPage = () => {
       <main className="flex h-screen justify-center">
         <div className="bg-grey-800 h-full w-full border-x-4 border-lime-300 md:max-w-2xl">
           <div>
-            {!user.isSignedIn && (
+            {!isSignedIn && (
               <div className="m-4 flex w-32 rounded-md bg-gray-900 px-4 text-right hover:bg-gray-700">
                 <SignInButton />
               </div>
             )}
-            {!!user.isSignedIn && (
+            {!!isSignedIn && (
               <div className="max-h-26 max-w-26 rounded-full p-4">
                 <CreatePostWizard />
               </div>
             )}
           </div>
-          <div className="flex flex-col">
-            {[...data, ...data]?.map((fullPost) => (
-              <PostView {...fullPost} key={fullPost.post.id} />
-            ))}
-          </div>
+          <Feed />
         </div>
       </main>
     </>
