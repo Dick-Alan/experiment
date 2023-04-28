@@ -59,7 +59,7 @@ const PostView = (props: PostwithUser) => {
       </div>
       <div className="flex flex-col">
         <span className="text-s">
-          {`@${author.username}`} [
+          {author.username} [
           <span className="text-xs">{dayjs(postTime).fromNow()}</span>]
         </span>
         <span className="m-4 rounded-md p-2">{post.content}</span>
