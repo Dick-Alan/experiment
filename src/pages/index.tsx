@@ -6,6 +6,7 @@ import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import LoadingPage from "../components/loading";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
 
@@ -14,6 +15,14 @@ import type { RouterOutputs } from "~/utils/api";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
+  const [input, setInput] = useState("");
+  const ctx = api.useContext();
+  const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
+    onSuccess: () => {
+      setInput("");
+      void ctx.posts.getAll.invalidate();
+    },
+  });
 
   if (!user) return null;
   return (
@@ -32,8 +41,12 @@ const CreatePostWizard = () => {
         <input
           className=" m-1  h-12 grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
           placeholder="Type message"
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={isPosting}
         />
-        <button>Post</button>
+        <button onClick={() => mutate({ content: input })}>Post</button>
       </div>
     </div>
   );
@@ -48,20 +61,21 @@ const PostView = (props: PostwithUser) => {
       className="m-1 flex gap-1 rounded-md border-y border-lime-400 bg-gray-900 bg-opacity-40 p-1 text-left"
       key={post.id}
     >
-      <div className="">
-        <Image
-          src={author.profilepicture}
-          alt={author.username ? author.username : "LOADING"}
-          className="rounded-full"
-          width={56}
-          height={56}
-        />
-      </div>
       <div className="flex flex-col">
+        <div className="">
+          <Image
+            src={author.profilepicture}
+            alt={author.username ? author.username : "LOADING"}
+            className="rounded-full"
+            width={36}
+            height={36}
+          />
+        </div>
         <span className="text-s">
           {author.username} [
           <span className="text-xs">{dayjs(postTime).fromNow()}</span>]
         </span>
+
         <span className="m-4 rounded-md p-2">{post.content}</span>
       </div>
     </div>
@@ -74,7 +88,7 @@ const Feed = () => {
   if (!data) return <div>Something went wrong</div>;
   return (
     <div className="flex flex-col">
-      {[...data, ...data]?.map((fullPost) => (
+      {data.map((fullPost) => (
         <PostView {...fullPost} key={fullPost.post.id} />
       ))}
     </div>
