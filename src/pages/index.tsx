@@ -51,7 +51,7 @@ const PostView = (props: PostwithUser) => {
       <div className="">
         <Image
           src={author.profilepicture}
-          alt={author.username}
+          alt={author.username ? author.username : null}
           className="rounded-full"
           width={56}
           height={56}
