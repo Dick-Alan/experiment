@@ -70,7 +70,7 @@ export const postsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const authorId = ctx.userId;
+      const authorId = ctx.userId!;
 
       const { success } = await ratelimit.limit(authorId);
 
@@ -78,7 +78,7 @@ export const postsRouter = createTRPCRouter({
 
       const post = await ctx.prisma.post.create({
         data: {
-          authorId: authorId ? authorId : "none",
+          authorId: authorId,
           content: input.content,
         },
       });
