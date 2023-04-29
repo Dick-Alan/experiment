@@ -95,18 +95,21 @@ const PostView = (props: PostwithUser) => {
         <div className="">
           <Image
             src={author.profilepicture}
-            alt={author.username ? author.username : "LOADING"}
+            alt={author.username || ""}
             className="rounded-full"
             width={36}
             height={36}
           />
         </div>
         <span className="text-s">
-          {author.username} [
-          <span className="text-xs">{dayjs(postTime).fromNow()}</span>]
+          <Link href={`/@${author.username}`}>
+            <span>{author.username}</span>
+          </Link>{" "}
+          [<span className="text-xs">{dayjs(postTime).fromNow()}</span>]
         </span>
-
-        <span className="m-4 rounded-md p-2">{post.content}</span>
+        <Link href={`/post/${post.id}`}>
+          <span className="m-4 rounded-md p-2">{post.content}</span>
+        </Link>
       </div>
     </div>
   );
