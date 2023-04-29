@@ -102,7 +102,7 @@ const PostView = (props: PostwithUser) => {
           />
         </div>
         <span className="text-s">
-          <Link href={`/@${author.username}`}>
+          <Link href={`/@${author.username!}`}>
             <span>{author.username}</span>
           </Link>{" "}
           [<span className="text-xs">{dayjs(postTime).fromNow()}</span>]
