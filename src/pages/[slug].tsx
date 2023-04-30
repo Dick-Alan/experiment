@@ -11,12 +11,33 @@ dayjs.extend(relativeTime);
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 import { User } from "@clerk/nextjs/dist/api";
-import LoadingPage from "~/components/loading";
+import { LoadingPage, LoadingSpinner } from "~/components/loading";
 
+const ProfileFeed = (props: { userId: string }) => {
+  const { data, isLoading } = api.posts.getPostsByUserId.useQuery({
+    userId: props.userId,
+  });
+  if (isLoading) {
+    return (
+      <div className="align-center flex content-center items-center justify-center">
+        <LoadingSpinner size={56} />
+      </div>
+    );
+  }
+  if (!data || data.length === 0) return <div>User has not posted.</div>;
+  return (
+    <div className="flex flex-col">
+      {data.map((fullPost) => (
+        <PostView {...fullPost} key={fullPost.post.id} />
+      ))}
+    </div>
+  );
+};
 const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
   const { data } = api.profile.getUserByUsername.useQuery({
     username,
   });
+  const githublink = `https://www.github.com/${username ?? ""}`;
 
   if (!data) return <div>404</div>;
   return (
@@ -38,8 +59,12 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         <div className="h-[64px]"></div>
         <div className="p-4">
           <div className="text-2xl font-bold">{data.username ?? ""}</div>
+          <div className="p-2">
+            <Link href={githublink}>[Go to GitHub]</Link>
+          </div>
         </div>
         <div className="border-b border-lime-600"></div>
+        <ProfileFeed userId={data.id} />
       </PageLayout>
     </>
   );
@@ -49,6 +74,7 @@ import { createServerSideHelpers } from "@trpc/react-query/server";
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import superjson from "superjson";
+import { PostView } from "~/components/postview";
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const ssg = createServerSideHelpers({
