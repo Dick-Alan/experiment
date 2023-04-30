@@ -4,4 +4,5 @@
 
 body {
   @apply bg-black font-mono text-lime-600;
+  overscroll-behavior: none;
 }
