@@ -57,9 +57,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     transformer: superjson, // optional - adds superjson serialization
   });
 
-  const slug = context.params?.slug ?? "";
+  const slug = context.params?.slug;
+  if (typeof slug !== "string") throw new Error("no username");
   const username = slug.replace("@", "");
-  if (typeof username !== "string") throw new Error("no username");
 
   await ssg.profile.getUserByUsername.prefetch({ username });
 
