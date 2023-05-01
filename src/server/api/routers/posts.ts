@@ -12,6 +12,7 @@ import { TRPCError } from "@trpc/server";
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import type { Post } from "@prisma/client";
+import { CssSyntaxError } from "postcss";
 
 const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
@@ -60,6 +61,29 @@ export const postsRouter = createTRPCRouter({
       if (!post) throw new TRPCError({ code: "NOT_FOUND" });
 
       return (await addUserDataToPosts([post]))[0];
+    }),
+
+  delete: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const authorId = ctx.userId;
+      const postId = input.id;
+      const post = await ctx.prisma.post.findUnique({
+        where: { id: postId },
+      });
+      if (!post || post.authorId !== authorId) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+      await ctx.prisma.post.delete({
+        where: {
+          id: postId,
+        },
+      });
+      return { success: true };
     }),
 
   getAll: publicProcedure.query(async ({ ctx }) => {
