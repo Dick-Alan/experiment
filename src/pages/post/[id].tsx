@@ -59,6 +59,7 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
         <div className="">
           {comments?.map((e) => (
             <CommentView
+              key={e.comment.id}
               comment={{
                 id: e.comment.id,
                 createdAt: e.comment.createdAt,
