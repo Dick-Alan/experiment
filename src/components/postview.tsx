@@ -1,16 +1,12 @@
-import { type NextPage } from "next";
 import Image from "next/image";
-import Head from "next/head";
+
 import Link from "next/link";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingPage, LoadingSpinner } from "../components/loading";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 
-import { postsRouter } from "~/server/api/routers/posts";
+import toast from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -50,7 +46,7 @@ export const PostView = (props: PostwithUser) => {
 
   return (
     <div
-      className=" relative m-1 flex gap-1 rounded-md border-y border-slate-400 bg-gray-900 bg-opacity-40 p-1 text-left"
+      className="relative m-1 flex gap-1 rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
       key={post.id}
     >
       <div className="flex flex-col">

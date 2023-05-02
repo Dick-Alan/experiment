@@ -1,16 +1,12 @@
-import { type NextPage } from "next";
 import Image from "next/image";
-import Head from "next/head";
+
 import Link from "next/link";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingPage, LoadingSpinner } from "../components/loading";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 
-import { postsRouter } from "~/server/api/routers/posts";
+import toast from "react-hot-toast";
 
 dayjs.extend(relativeTime);
 
@@ -50,7 +46,7 @@ export const CommentView = (props: CommentwithUser) => {
 
   return (
     <div
-      className=" relative m-1 ml-10 flex gap-1 rounded-md border-y border-l-8 border-slate-200 bg-gray-900 bg-opacity-40 p-1 text-left"
+      className=" relative m-1 ml-10 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
       key={id}
     >
       <div className="flex flex-col">
@@ -74,7 +70,7 @@ export const CommentView = (props: CommentwithUser) => {
           </span>
         </div>
 
-        <span className="ml-10 rounded-md ">{comment.content}</span>
+        <span className="my-5 ml-10 rounded-md ">{comment.content}</span>
 
         <div className="w-4/4 my-2flex border-slate-100">
           {user?.id === author.id && (

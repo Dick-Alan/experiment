@@ -1,8 +1,6 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 import { PostView } from "~/components/postview";
-import Head from "next/head";
-import Link from "next/link";
 import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -37,11 +35,11 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
   return (
-    <div className="flex-col-2 flex gap-1 rounded-md border border-slate-200 p-1">
+    <div className="flex-col-2 flex gap-3 rounded-md  border-slate-200 p-1">
       <div>
-        {user.fullName}
+        <div className="text-xl">{user.fullName}</div>
         <Image
-          className="rounded-full"
+          className="mt-5 rounded-full"
           src={user.profileImageUrl}
           alt="Profile image"
           width={56}
