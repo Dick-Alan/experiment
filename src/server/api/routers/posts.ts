@@ -11,8 +11,8 @@ import { TRPCError } from "@trpc/server";
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
-import type { Post } from "@prisma/client";
-import { CssSyntaxError } from "postcss";
+import type { Post, Comment } from "@prisma/client";
+import { CssSyntaxError, comment } from "postcss";
 
 const addUserDataToPosts = async (posts: Post[]) => {
   const users = (
@@ -31,6 +31,30 @@ const addUserDataToPosts = async (posts: Post[]) => {
       });
     return {
       post,
+      author: {
+        ...author,
+        username: author.username,
+      },
+    };
+  });
+};
+const addUserDataToComments = async (comments: Comment[]) => {
+  const users = (
+    await clerkClient.users.getUserList({
+      userId: comments.map((comment) => comment.authorId),
+      limit: 100,
+    })
+  ).map(filterUserForClient);
+
+  return comments.map((comment) => {
+    const author = users.find((user) => user.id === comment.authorId);
+    if (!author)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Author for post not found",
+      });
+    return {
+      comment,
       author: {
         ...author,
         username: author.username,
@@ -133,4 +157,86 @@ export const postsRouter = createTRPCRouter({
       });
       return post;
     }),
+
+  // create new comment
+  createComment: privateProcedure
+    .input(
+      z.object({
+        content: z.string().min(1).max(255),
+        postId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const authorId = ctx.userId!;
+
+      const { success } = await ratelimit.limit(authorId);
+
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
+      const post = await ctx.prisma.comment.create({
+        data: {
+          authorId: authorId,
+          content: input.content,
+          postId: input.postId,
+        },
+      });
+      return comment;
+    }),
+
+  //delete comment
+  deleteComment: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const authorId = ctx.userId;
+      const id = input.id;
+      const comment = await ctx.prisma.comment.findUnique({
+        where: { id: id },
+      });
+      if (!comment || comment.authorId !== authorId) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+      await ctx.prisma.comment.delete({
+        where: {
+          id: id,
+        },
+      });
+      return { success: true };
+    }),
+  getComments: publicProcedure.query(async ({ ctx }) => {
+    const comments = await ctx.prisma.comment.findMany({
+      take: 100,
+    });
+    return comments;
+  }),
+  getCommentsByPostId: publicProcedure
+    .input(
+      z.object({
+        postId: z.string(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.comment
+        .findMany({
+          where: {
+            postId: input.postId,
+          },
+          take: 100,
+          orderBy: [{ createdAt: "desc" }],
+        })
+        .then(addUserDataToComments)
+    ),
 });
+
+// export const commentsRouter = createTRPCRouter({
+//   getAll: publicProcedure.query(async ({ ctx }) => {
+//     const comments = await ctx.prisma.comment.findMany({
+//       take: 100,
+//       orderBy: [{ createdAt: "desc" }],
+//     });
+//     return addUserDataToComments(comments);
+//   }),
+// });

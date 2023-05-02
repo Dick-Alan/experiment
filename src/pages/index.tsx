@@ -37,7 +37,7 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
   return (
-    <div className="flex-col-2 flex gap-1 rounded-md border border-lime-200 p-1">
+    <div className="flex-col-2 flex gap-1 rounded-md border border-slate-200 p-1">
       <div>
         {user.fullName}
         <Image
@@ -67,7 +67,7 @@ const CreatePostWizard = () => {
         />
         {input !== "" && !isPosting && (
           <button
-            className="rounded-md bg-gray-800 p-1 hover:border hover:border-lime-600"
+            className="rounded-md bg-gray-800 p-1 hover:border hover:border-slate-100"
             onClick={() => mutate({ content: input })}
           >
             Post

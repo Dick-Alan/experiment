@@ -20,38 +20,38 @@ import { PageLayout } from "~/components/layout";
 import { RequestCookiesAdapter } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { object } from "zod";
 
-type PostwithUser = RouterOutputs["posts"]["getAll"][number];
+type CommentwithUser = RouterOutputs["posts"]["getCommentsByPostId"][number];
 
-export const PostView = (props: PostwithUser) => {
-  const { post, author } = props;
+export const CommentView = (props: CommentwithUser) => {
+  const { comment, author } = props;
   const { user } = useUser();
   const ctx = api.useContext();
-  const id = post.id;
-  const postId = id;
-  const comments = api.posts.getCommentsByPostId.useQuery({
-    postId,
-  }).data;
-  const postTime = post.createdAt.toString().substring(0, 33);
-  const { mutate, isLoading: isDeleting } = api.posts.delete.useMutation({
-    onSuccess: () => {
-      toast.success("Deleted");
+  console.log(props, "props log");
+  const id = comment.id;
 
-      void ctx.posts.getAll.invalidate();
-    },
-    onError: (e) => {
-      const errorMessage = e.data?.zodError?.fieldErrors.content;
-      if (errorMessage && errorMessage[0]) {
-        toast.error(errorMessage[0]);
-      } else {
-        toast.error("Failed to delete");
-      }
-    },
-  });
+  const postTime = comment.createdAt.toString().substring(0, 33);
+  const { mutate, isLoading: isDeleting } = api.posts.deleteComment.useMutation(
+    {
+      onSuccess: () => {
+        toast.success("Deleted");
+
+        void ctx.posts.getCommentsByPostId.invalidate();
+      },
+      onError: (e) => {
+        const errorMessage = e.data?.zodError?.fieldErrors.content;
+        if (errorMessage && errorMessage[0]) {
+          toast.error(errorMessage[0]);
+        } else {
+          toast.error("Failed to delete");
+        }
+      },
+    }
+  );
 
   return (
     <div
-      className=" relative m-1 flex gap-1 rounded-md border-y border-slate-400 bg-gray-900 bg-opacity-40 p-1 text-left"
-      key={post.id}
+      className=" relative m-1 ml-10 flex gap-1 rounded-md border-y border-l-8 border-slate-200 bg-gray-900 bg-opacity-40 p-1 text-left"
+      key={id}
     >
       <div className="flex flex-col">
         <div className="col-3 flex gap-3 p-2">
@@ -66,20 +66,17 @@ export const PostView = (props: PostwithUser) => {
             <Link href={`/@${author.username!}`}>
               <span>{author.username}</span>
             </Link>{" "}
-            [<span className="text-xs">{dayjs(postTime).fromNow()}</span>]
+            [
+            <span className="text-xs">
+              {dayjs(comment.createdAt.toString().substring(0, 33)).fromNow()}
+            </span>
+            ]
           </span>
         </div>
 
-        <Link href={`/post/${post.id}`}>
-          <span className="w-4/4 m-4 ml-10 flex rounded-md ">
-            {post.content}
-          </span>
-        </Link>
+        <span className="ml-10 rounded-md ">{comment.content}</span>
 
-        <div className="w-4/4 my-2 ml-10 flex border-slate-100">
-          <Link className="" href={`/post/${post.id}`}>
-            {comments?.length} comments
-          </Link>
+        <div className="w-4/4 my-2flex border-slate-100">
           {user?.id === author.id && (
             <button
               className="mx-5 text-slate-100 hover:text-red-800"
