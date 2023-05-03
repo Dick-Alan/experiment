@@ -46,7 +46,11 @@ const CreatePostWizard = () => {
           width={56}
           height={56}
         />
+        <div className="mt-2 rounded-md bg-slate-800 p-1 text-center">
+          <SignOutButton />
+        </div>
       </div>
+
       <div className="flex w-3/4 flex-col">
         <input
           className=" m-1  h-12 grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"

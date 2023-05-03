@@ -20,6 +20,7 @@ import { PageLayout } from "~/components/layout";
 
 export const CommentBar = (props: { id: string }) => {
   const [input, setInput] = useState("");
+  const { user } = useUser();
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.posts.createComment.useMutation({
     onSuccess: () => {
@@ -36,6 +37,7 @@ export const CommentBar = (props: { id: string }) => {
       }
     },
   });
+  if (!user) return null;
 
   return (
     <div className="relative bottom-0 left-1/2 z-50  -translate-x-1/2 transform rounded-xl   bg-transparent px-10">

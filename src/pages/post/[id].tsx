@@ -76,7 +76,7 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
             />
           ))}
         </div>
-        <CommentBar id={postId.toString()} />
+        <CommentBar id={postId} />
         {/* <div className="fixed bottom-0 left-1/2 z-50  -translate-x-1/2 transform rounded-md  border bg-black px-10">
           <input
             className=" m-1  h-12 grow rounded-sm bg-gray-900  p-1 outline-none"
