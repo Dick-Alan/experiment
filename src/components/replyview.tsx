@@ -45,7 +45,7 @@ export const ReplyView = (props: ReplytwithUser) => {
 
   return (
     <div
-      className=" relative m-1 ml-5 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
+      className="relative m-1 ml-5 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900 from-0%  via-black via-5% to-black to-100% p-1 text-left hover:border-slate-300"
       key={id}
       onMouseOver={(e) => setActive(true)}
       onMouseLeave={(e) => {
