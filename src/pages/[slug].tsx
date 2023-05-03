@@ -49,7 +49,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
       </Head>
       <PageLayout>
         <Link href="/">
-          <div className="col-span-2 m-4 flex h-[50px] w-[80px] hover:bg-slate-900 rounded-md border-l-4 border-l-slate-700 bg-black p-1">
+          <div className="col-span-2 m-4 flex h-[50px] w-[80px] rounded-md border-l-4 border-l-slate-700 bg-black p-1 hover:bg-slate-900">
             <div className="text-4xl">{"<"}</div>
           </div>
         </Link>
@@ -65,6 +65,7 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
         <div className="h-[64px]"></div>
         <div className="p-4">
           <div className="text-2xl font-bold">{data.username ?? ""}</div>
+
           <div className="p-2">
             <Link href={githublink}>[Go to GitHub]</Link>
           </div>

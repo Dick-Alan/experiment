@@ -22,6 +22,7 @@ const CreatePostWizard = () => {
     onSuccess: () => {
       setInput("");
       void ctx.posts.getAll.invalidate();
+      toast.success("post successfull");
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
