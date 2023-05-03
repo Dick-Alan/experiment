@@ -71,7 +71,7 @@ const CreatePostWizard = () => {
         />
         {input !== "" && !isPosting && (
           <button
-            className="rounded-md bg-slate-800 p-1 hover:border hover:border-slate-100"
+            className="rounded-md bg-slate-800 p-1 text-slate-300 hover:border hover:bg-green-500"
             onClick={() => mutate({ content: input })}
           >
             Post

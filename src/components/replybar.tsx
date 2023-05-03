@@ -20,6 +20,7 @@ import { PageLayout } from "~/components/layout";
 
 export const ReplyBar = (props: { id: string }) => {
   const [input, setInput] = useState("");
+
   const { user } = useUser();
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.posts.createReply.useMutation({
@@ -40,7 +41,7 @@ export const ReplyBar = (props: { id: string }) => {
   if (!user) return null;
 
   return (
-    <div className="relative bottom-0 left-1/2 z-50  -translate-x-1/2 transform rounded-xl   bg-transparent px-10">
+    <div className="ml-2">
       <input
         className=" m-1 h-12 grow rounded-md border border-slate-800 bg-transparent p-1 outline-none active:border-slate-500"
         placeholder="reply..."
@@ -58,10 +59,12 @@ export const ReplyBar = (props: { id: string }) => {
       ></input>
       {input !== "" && !isPosting && (
         <button
-          className="rounded-md bg-gray-800 p-3 hover:border hover:border-slate-100"
-          onClick={() => mutate({ content: input, commentId: props.id })}
+          className="rounded-md bg-gray-800 p-3 text-slate-300 hover:border hover:bg-green-500"
+          onClick={() => {
+            mutate({ content: input, commentId: props.id });
+          }}
         >
-          Leave reply
+          Reply
         </button>
       )}
     </div>

@@ -5,7 +5,7 @@ import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingPage, LoadingSpinner } from "../components/loading";
-
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 dayjs.extend(relativeTime);
@@ -19,6 +19,7 @@ import { object } from "zod";
 type ReplytwithUser = RouterOutputs["posts"]["getRepliesByCommentId"][number];
 
 export const ReplyView = (props: ReplytwithUser) => {
+  const [active, setActive] = useState(false);
   const { reply, author } = props;
   const { user } = useUser();
   const ctx = api.useContext();
@@ -44,8 +45,12 @@ export const ReplyView = (props: ReplytwithUser) => {
 
   return (
     <div
-      className=" relative m-1 ml-10 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
+      className=" relative m-1 ml-5 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
       key={id}
+      onMouseOver={(e) => setActive(true)}
+      onMouseLeave={(e) => {
+        setActive(false);
+      }}
     >
       <div className="flex flex-col">
         <div className="col-3 flex gap-3 p-2">
@@ -71,17 +76,20 @@ export const ReplyView = (props: ReplytwithUser) => {
         <span className="my-5 ml-10 rounded-md text-slate-50 ">
           {reply.content}
         </span>
-
-        <div className="w-4/4 my-2flex border-slate-100">
-          {user?.id === author.id && (
-            <button
-              className="mx-5 text-slate-100 hover:text-red-800"
-              onClick={() => mutate({ id })}
-            >
-              [Delete]
-            </button>
-          )}
-        </div>
+        {active ? (
+          <div className="w-4/4 my-2flex border-slate-100">
+            {user?.id === author.id && (
+              <button
+                className="mx-5 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-red-500"
+                onClick={() => mutate({ id })}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

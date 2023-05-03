@@ -317,4 +317,11 @@ export const postsRouter = createTRPCRouter({
       });
       return reply;
     }),
+  getAllReplies: publicProcedure.query(async ({ ctx }) => {
+    const replies = await ctx.prisma.reply.findMany({
+      take: 100,
+      orderBy: [{ createdAt: "desc" }],
+    });
+    return addUserDataToReplies(replies);
+  }),
 });

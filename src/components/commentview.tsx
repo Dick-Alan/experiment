@@ -22,6 +22,8 @@ type CommentwithUser = RouterOutputs["posts"]["getCommentsByPostId"][number];
 
 export const CommentView = (props: CommentwithUser) => {
   const { comment, author } = props;
+  const [active, setActive] = useState(false);
+  const [replying, setReplying] = useState(false);
   const [repliesOn, setRepliesOn] = useState(false);
   const { user } = useUser();
   const ctx = api.useContext();
@@ -54,8 +56,13 @@ export const CommentView = (props: CommentwithUser) => {
   return (
     <div>
       <div
-        className=" relative m-1 ml-10 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
+        className=" relative m-1 ml-3 flex gap-1 rounded-2xl border-y border-l-8 border-r-4 border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
         key={id}
+        onMouseOver={(e) => setActive(true)}
+        onMouseLeave={(e) => {
+          setActive(false);
+          setReplying(false);
+        }}
       >
         <div className="flex flex-col">
           <div className="col-3 flex gap-3 p-2">
@@ -83,29 +90,54 @@ export const CommentView = (props: CommentwithUser) => {
           </span>
 
           <div className="w-4/4 my-2 flex border-slate-100">
-            <button className="ml-5" onClick={(e) => setRepliesOn(!repliesOn)}>
+            <button
+              className="ml-5"
+              onClick={(e) => {
+                setRepliesOn(!repliesOn);
+                setReplying(false);
+              }}
+            >
               {replies?.length ? (
                 <div>
-                  {replies.length} replies {repliesOn ? "[ - ]" : "[ + ]"}
+                  {replies.length} {replies.length > 1 ? "replies" : "reply"}{" "}
+                  {repliesOn ? "[ - ]" : "[ + ]"}
                 </div>
               ) : (
-                <button>reply {repliesOn ? "[ - ]" : "[ + ]"}</button>
+                ""
               )}
             </button>
-            {user?.id === author.id && (
-              <button
-                className="mx-5 text-slate-100 hover:text-red-800"
-                onClick={() => mutate({ id })}
-              >
-                [Delete]
-              </button>
+            {active ? (
+              <div className="grid-col-2 flex">
+                {user?.id === author.id && (
+                  <button
+                    className="ml-5 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-red-800"
+                    onClick={() => mutate({ id })}
+                  >
+                    Delete
+                  </button>
+                )}
+                {replying ? (
+                  <ReplyBar id={id} />
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      setReplying(!replying);
+                      setRepliesOn(true);
+                    }}
+                    className="ml-2 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-green-500"
+                  >
+                    Reply
+                  </button>
+                )}
+              </div>
+            ) : (
+              ""
             )}
           </div>
         </div>
       </div>
       {repliesOn ? (
-        <div className="t-0 ml-10 mt-0   rounded-bl-2xl border-l-4 border-slate-300">
-          <ReplyBar id={id} />{" "}
+        <div className="t-0 ml-5 mt-0   rounded-bl-2xl border-l-4 border-slate-300">
           {replies?.map((e) => (
             <ReplyView
               key={e.reply.id}

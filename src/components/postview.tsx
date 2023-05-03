@@ -23,7 +23,9 @@ type PostwithUser = RouterOutputs["posts"]["getAll"][number];
 
 export const PostView = (props: PostwithUser) => {
   const { post, author } = props;
+  const [active, setActive] = useState(false);
   const { user } = useUser();
+  const [commenting, setCommenting] = useState(false);
   const ctx = api.useContext();
   const [commentsOn, setCommentsOn] = useState(false);
   const id = post.id;
@@ -54,6 +56,11 @@ export const PostView = (props: PostwithUser) => {
       <div
         className=" relative m-1 flex gap-1 rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
         key={post.id}
+        onMouseOver={(e) => setActive(true)}
+        onMouseLeave={(e) => {
+          setActive(false);
+          setCommenting(false);
+        }}
       >
         <div className="flex flex-col">
           <div className="col-3 flex gap-3 p-2">
@@ -82,27 +89,47 @@ export const PostView = (props: PostwithUser) => {
             <button className="" onClick={(e) => setCommentsOn(!commentsOn)}>
               {comments?.length ? (
                 <div>
-                  {comments.length} comments {commentsOn ? "[ - ]" : "[ + ]"}
+                  {comments.length}{" "}
+                  {comments.length > 1 ? "comments" : "comment"}{" "}
+                  {commentsOn ? "[ - ]" : "[ + ]"}
                 </div>
               ) : (
-                <button>comment {commentsOn ? "[ - ]" : "[ + ]"}</button>
+                ""
               )}
             </button>
-            {user?.id === author.id && (
-              <button
-                className="mx-5 text-slate-100 hover:text-red-800"
-                onClick={() => mutate({ id })}
-              >
-                [Delete]
-              </button>
+            {active ? (
+              <div className="grid-col-2 flex">
+                {user?.id === author.id && (
+                  <button
+                    className="ml-5 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-red-800"
+                    onClick={() => mutate({ id })}
+                  >
+                    Delete
+                  </button>
+                )}
+                {commenting ? (
+                  <CommentBar id={postId} />
+                ) : (
+                  <button
+                    className="ml-2 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-green-500"
+                    onClick={(e) => {
+                      setCommenting(!commenting);
+                      setCommentsOn(true);
+                    }}
+                  >
+                    Comment
+                  </button>
+                )}
+              </div>
+            ) : (
+              ""
             )}
           </div>
         </div>
       </div>
 
       {commentsOn ? (
-        <div className="t-0 ml-10 mt-0   rounded-bl-2xl border-l-4 border-slate-500">
-          <CommentBar id={postId} />{" "}
+        <div className="t-0 ml-5 mt-0   rounded-bl-2xl border-l-4 border-slate-500">
           {comments?.map((e) => (
             <CommentView
               key={e.comment.id}
