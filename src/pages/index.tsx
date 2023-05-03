@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 import { PostView } from "~/components/postview";
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { SignIn, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingPage, LoadingSpinner } from "../components/loading";
@@ -18,6 +18,7 @@ const CreatePostWizard = () => {
   const { user } = useUser();
   const [input, setInput] = useState("");
   const ctx = api.useContext();
+  const [signInClicked, setSignInClicked] = useState(false);
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
@@ -46,7 +47,7 @@ const CreatePostWizard = () => {
           width={56}
           height={56}
         />
-        <div className="mt-2 rounded-md bg-slate-800 p-1 text-center">
+        <div>
           <SignOutButton />
         </div>
       </div>
@@ -70,7 +71,7 @@ const CreatePostWizard = () => {
         />
         {input !== "" && !isPosting && (
           <button
-            className="rounded-md bg-gray-800 p-1 hover:border hover:border-slate-100"
+            className="rounded-md bg-slate-800 p-1 hover:border hover:border-slate-100"
             onClick={() => mutate({ content: input })}
           >
             Post
@@ -109,10 +110,20 @@ const Home: NextPage = () => {
 
   return (
     <PageLayout>
-      <div>
+      <div className="">
         {!isSignedIn && (
-          <div className="m-4 flex w-32 rounded-md bg-gray-900 px-4 text-right hover:bg-gray-700">
-            <SignInButton />
+          <div className="relative m-3 flex flex-col content-center items-center  bg-transparent ">
+            <SignIn
+              appearance={{
+                layout: {
+                  logoPlacement: "none",
+                },
+                variables: {
+                  colorBackground: "#0f172a",
+                  colorText: "rgb(241, 245, 249)",
+                },
+              }}
+            />
           </div>
         )}
         {!!isSignedIn && (

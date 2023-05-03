@@ -18,22 +18,22 @@ import type { GetStaticProps } from "next";
 
 import { PageLayout } from "~/components/layout";
 
-export const CommentBar = (props: { id: string }) => {
+export const ReplyBar = (props: { id: string }) => {
   const [input, setInput] = useState("");
   const { user } = useUser();
   const ctx = api.useContext();
-  const { mutate, isLoading: isPosting } = api.posts.createComment.useMutation({
+  const { mutate, isLoading: isPosting } = api.posts.createReply.useMutation({
     onSuccess: () => {
       setInput("");
-      void ctx.posts.getCommentsByPostId.invalidate();
-      toast.success("comment posted");
+      void ctx.posts.getRepliesByCommentId.invalidate();
+      toast.success("reply posted");
     },
     onError: (e) => {
       const errorMessage = e.data?.zodError?.fieldErrors.content;
       if (errorMessage && errorMessage[0]) {
         toast.error(errorMessage[0]);
       } else {
-        toast.error("Failed to post comment");
+        toast.error("Failed to post reply");
       }
     },
   });
@@ -43,7 +43,7 @@ export const CommentBar = (props: { id: string }) => {
     <div className="relative bottom-0 left-1/2 z-50  -translate-x-1/2 transform rounded-xl   bg-transparent px-10">
       <input
         className=" m-1 h-12 grow rounded-md border border-slate-800 bg-transparent p-1 outline-none active:border-slate-500"
-        placeholder="comment..."
+        placeholder="reply..."
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -51,7 +51,7 @@ export const CommentBar = (props: { id: string }) => {
           if (e.key === "Enter") {
             e.preventDefault();
             if (input !== "") {
-              mutate({ content: input, postId: props.id });
+              mutate({ content: input, commentId: props.id });
             }
           }
         }}
@@ -59,9 +59,9 @@ export const CommentBar = (props: { id: string }) => {
       {input !== "" && !isPosting && (
         <button
           className="rounded-md bg-gray-800 p-3 hover:border hover:border-slate-100"
-          onClick={() => mutate({ content: input, postId: props.id })}
+          onClick={() => mutate({ content: input, commentId: props.id })}
         >
-          Leave comment
+          Leave reply
         </button>
       )}
     </div>

@@ -11,7 +11,7 @@ import { TRPCError } from "@trpc/server";
 
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
-import type { Post, Comment } from "@prisma/client";
+import type { Post, Comment, Reply } from "@prisma/client";
 import { CssSyntaxError, comment } from "postcss";
 
 const addUserDataToPosts = async (posts: Post[]) => {
@@ -38,6 +38,7 @@ const addUserDataToPosts = async (posts: Post[]) => {
     };
   });
 };
+
 const addUserDataToComments = async (comments: Comment[]) => {
   const users = (
     await clerkClient.users.getUserList({
@@ -55,6 +56,31 @@ const addUserDataToComments = async (comments: Comment[]) => {
       });
     return {
       comment,
+      author: {
+        ...author,
+        username: author.username,
+      },
+    };
+  });
+};
+
+const addUserDataToReplies = async (replies: Reply[]) => {
+  const users = (
+    await clerkClient.users.getUserList({
+      userId: replies.map((reply) => reply.authorId),
+      limit: 100,
+    })
+  ).map(filterUserForClient);
+
+  return replies.map((reply) => {
+    const author = users.find((user) => user.id === reply.authorId);
+    if (!author)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Author for post not found",
+      });
+    return {
+      reply,
       author: {
         ...author,
         username: author.username,
@@ -173,7 +199,7 @@ export const postsRouter = createTRPCRouter({
 
       if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
 
-      const post = await ctx.prisma.comment.create({
+      const comment = await ctx.prisma.comment.create({
         data: {
           authorId: authorId,
           content: input.content,
@@ -206,12 +232,7 @@ export const postsRouter = createTRPCRouter({
       });
       return { success: true };
     }),
-  getComments: publicProcedure.query(async ({ ctx }) => {
-    const comments = await ctx.prisma.comment.findMany({
-      take: 100,
-    });
-    return comments;
-  }),
+
   getCommentsByPostId: publicProcedure
     .input(
       z.object({
@@ -229,14 +250,71 @@ export const postsRouter = createTRPCRouter({
         })
         .then(addUserDataToComments)
     ),
-});
+  //get replies
+  getRepliesByCommentId: publicProcedure
+    .input(
+      z.object({
+        commentId: z.string(),
+      })
+    )
+    .query(({ ctx, input }) =>
+      ctx.prisma.reply
+        .findMany({
+          where: {
+            commentId: input.commentId,
+          },
+          take: 100,
+          orderBy: [{ createdAt: "desc" }],
+        })
+        .then(addUserDataToReplies)
+    ),
 
-// export const commentsRouter = createTRPCRouter({
-//   getAll: publicProcedure.query(async ({ ctx }) => {
-//     const comments = await ctx.prisma.comment.findMany({
-//       take: 100,
-//       orderBy: [{ createdAt: "desc" }],
-//     });
-//     return addUserDataToComments(comments);
-//   }),
-// });
+  //delete reply
+  deleteReply: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const authorId = ctx.userId;
+      const id = input.id;
+      const reply = await ctx.prisma.reply.findUnique({
+        where: { id: id },
+      });
+      if (!reply || reply.authorId !== authorId) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+      await ctx.prisma.reply.delete({
+        where: {
+          id: id,
+        },
+      });
+      return { success: true };
+    }),
+
+  //create reply
+  createReply: privateProcedure
+    .input(
+      z.object({
+        content: z.string().min(1).max(255),
+        commentId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const authorId = ctx.userId!;
+
+      const { success } = await ratelimit.limit(authorId);
+
+      if (!success) throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+
+      const reply = await ctx.prisma.reply.create({
+        data: {
+          authorId: authorId,
+          content: input.content,
+          commentId: input.commentId,
+        },
+      });
+      return reply;
+    }),
+});

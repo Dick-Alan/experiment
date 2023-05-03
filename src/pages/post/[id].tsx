@@ -22,6 +22,7 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
   const { data } = api.posts.getById.useQuery({
     id,
   });
+
   const [input, setInput] = useState("");
   const ctx = api.useContext();
   const { mutate, isLoading: isPosting } = api.posts.createComment.useMutation({
@@ -61,47 +62,6 @@ const SinglePostPage: NextPage<{ id: string }> = ({ id }) => {
           </div>
         </Link>
         <PostView {...data} />
-        <div className="t-0 ml-10 mt-0   rounded-bl-2xl border-l-4 border-slate-600">
-          {comments?.map((e) => (
-            <CommentView
-              key={e.comment.id}
-              comment={{
-                id: e.comment.id,
-                createdAt: e.comment.createdAt,
-                postId: e.comment.postId,
-                content: e.comment.content,
-                authorId: e.author.id,
-              }}
-              author={e.author}
-            />
-          ))}
-        </div>
-        <CommentBar id={postId} />
-        {/* <div className="fixed bottom-0 left-1/2 z-50  -translate-x-1/2 transform rounded-md  border bg-black px-10">
-          <input
-            className=" m-1  h-12 grow rounded-sm bg-gray-900  p-1 outline-none"
-            placeholder="Type comment"
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                if (input !== "") {
-                  mutate({ content: input, postId: postId });
-                }
-              }
-            }}
-          ></input>
-          {input !== "" && !isPosting && (
-            <button
-              className="rounded-md bg-gray-800 p-1 hover:border hover:border-slate-100"
-              onClick={() => mutate({ content: input, postId: postId })}
-            >
-              post comment
-            </button>
-          )}
-        </div> */}
       </PageLayout>
     </>
   );

@@ -52,7 +52,7 @@ export const PostView = (props: PostwithUser) => {
   return (
     <div>
       <div
-        className="relative m-1 flex gap-1 rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
+        className=" relative m-1 flex gap-1 rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900  from-0% via-black via-5% to-black to-100% p-1 text-left"
         key={post.id}
       >
         <div className="flex flex-col">
@@ -73,7 +73,7 @@ export const PostView = (props: PostwithUser) => {
           </div>
 
           <Link href={`/post/${post.id}`}>
-            <span className="w-4/4 m-4 ml-10 flex rounded-md ">
+            <span className="w-4/4 m-4 ml-10 flex rounded-md text-slate-50 ">
               {post.content}
             </span>
           </Link>
@@ -99,9 +99,10 @@ export const PostView = (props: PostwithUser) => {
           </div>
         </div>
       </div>
+
       {commentsOn ? (
-        <div className="t-0 ml-10 mt-0   rounded-bl-2xl border-l-4">
-          {" "}
+        <div className="t-0 ml-10 mt-0   rounded-bl-2xl border-l-4 border-slate-500">
+          <CommentBar id={postId} />{" "}
           {comments?.map((e) => (
             <CommentView
               key={e.comment.id}
@@ -115,7 +116,6 @@ export const PostView = (props: PostwithUser) => {
               author={e.author}
             />
           ))}{" "}
-          <CommentBar id={postId} />
         </div>
       ) : (
         ""

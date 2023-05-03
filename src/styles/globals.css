@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-normal text-slate-200;
+  @apply font-normal text-slate-500;
   overscroll-behavior: none;
   background-image: linear-gradient(to right, #0f172a, black);
 }
