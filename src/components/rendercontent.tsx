@@ -6,7 +6,7 @@ export const RenderContent = (props: { content: string }) => {
       /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/g
     ) || [];
 
-  var unSplitText = props.content;
+  const unSplitText = props.content;
 
   const text: string[] = unSplitText.split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
@@ -14,7 +14,7 @@ export const RenderContent = (props: { content: string }) => {
     <div>
       <div>
         {text.map((e: string) => (
-          <span>
+          <span key={e}>
             {links.includes(e) ? (
               regex.test(e) ? (
                 <Link href={e}>
