@@ -7,7 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingPage, LoadingSpinner } from "../components/loading";
 
 import toast from "react-hot-toast";
-
+import { RenderContent } from "./rendercontent";
 dayjs.extend(relativeTime);
 import { useState } from "react";
 import { api } from "~/utils/api";
@@ -86,7 +86,7 @@ export const CommentView = (props: CommentwithUser) => {
           </div>
 
           <span className="my-5 ml-10 rounded-md text-slate-50 ">
-            {comment.content}
+            <RenderContent content={comment.content} />
           </span>
 
           <div className="w-4/4 my-2 flex border-slate-100">

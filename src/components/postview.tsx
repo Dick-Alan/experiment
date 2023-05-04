@@ -18,6 +18,7 @@ import { object } from "zod";
 import { CommentView } from "./commentview";
 import { comment } from "postcss";
 import { CommentBar } from "./commentbar";
+import { RenderContent } from "./rendercontent";
 
 type PostwithUser = RouterOutputs["posts"]["getAll"][number];
 
@@ -34,6 +35,8 @@ export const PostView = (props: PostwithUser) => {
     postId,
   }).data;
   const postTime = post.createdAt.toString().substring(0, 33);
+
+  //code for handling content from backend and converting it into frontend object.
 
   const { mutate, isLoading: isDeleting } = api.posts.delete.useMutation({
     onSuccess: () => {
@@ -79,11 +82,16 @@ export const PostView = (props: PostwithUser) => {
             </span>
           </div>
 
-          <Link href={`/post/${post.id}`}>
+          <div>
             <span className="w-4/4 m-4 ml-10 flex rounded-md text-slate-50 ">
-              {post.content}
+              <RenderContent content={post.content} />
             </span>
-          </Link>
+          </div>
+
+          <Link
+            className="absolute right-0 top-0 mx-2 content-end justify-end text-right text-3xl hover:text-green-500"
+            href={`/post/${post.id}`}
+          >{`>`}</Link>
 
           <div className="w-4/4 my-2 ml-10 flex border-slate-100">
             <button className="" onClick={(e) => setCommentsOn(!commentsOn)}>

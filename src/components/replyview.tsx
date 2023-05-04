@@ -7,6 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { LoadingPage, LoadingSpinner } from "../components/loading";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { RenderContent } from "./rendercontent";
 
 dayjs.extend(relativeTime);
 
@@ -74,7 +75,7 @@ export const ReplyView = (props: ReplytwithUser) => {
         </div>
 
         <span className="my-5 ml-10 rounded-md text-slate-50 ">
-          {reply.content}
+          <RenderContent content={reply.content} />
         </span>
         {active ? (
           <div className="w-4/4 my-2 flex border-slate-100">
