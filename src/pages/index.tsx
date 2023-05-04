@@ -52,9 +52,9 @@ const CreatePostWizard = () => {
         </div>
       </div>
 
-      <div className="flex w-3/4 flex-col">
+      <div className=" flex-col-2 ml-8 mt-16 flex h-14 w-auto">
         <input
-          className=" m-1  h-12 grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
+          className=" m-1  h-auto grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
           placeholder="Type message"
           type="text"
           value={input}
@@ -71,7 +71,7 @@ const CreatePostWizard = () => {
         />
         {input !== "" && !isPosting && (
           <button
-            className="rounded-md bg-slate-800 p-1 text-slate-300 hover:border hover:bg-green-500"
+            className="rounded-md bg-slate-800 px-3 text-slate-300 hover:border hover:bg-green-500"
             onClick={() => mutate({ content: input })}
           >
             Post

@@ -98,9 +98,18 @@ export const CommentView = (props: CommentwithUser) => {
               }}
             >
               {replies?.length ? (
-                <div>
-                  {replies.length} {replies.length > 1 ? "replies" : "reply"}{" "}
-                  {repliesOn ? "[ - ]" : "[ + ]"}
+                <div
+                  className={`text-xs ${
+                    repliesOn ? "text-red-500" : "text-green-500"
+                  }`}
+                >
+                  {repliesOn
+                    ? "Collapse "
+                    : `Expand ${replies.length} ${
+                        replies.length > 1 ? "replies" : "reply"
+                      }`}
+
+                  {repliesOn ? " [ - ]" : " [ + ]"}
                 </div>
               ) : (
                 ""
@@ -110,7 +119,7 @@ export const CommentView = (props: CommentwithUser) => {
               <div className="grid-col-2 flex">
                 {user?.id === author.id && (
                   <button
-                    className="ml-5 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-red-800"
+                    className="ml-5 rounded-md bg-slate-900 px-2 text-slate-300 hover:bg-red-800"
                     onClick={() => mutate({ id })}
                   >
                     Delete
@@ -124,7 +133,7 @@ export const CommentView = (props: CommentwithUser) => {
                       setReplying(!replying);
                       setRepliesOn(true);
                     }}
-                    className="ml-2 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-green-500"
+                    className="ml-2 rounded-md bg-slate-900 px-2 text-slate-300 hover:bg-green-500"
                   >
                     Reply
                   </button>

@@ -80,7 +80,7 @@ export const ReplyView = (props: ReplytwithUser) => {
           <div className="w-4/4 my-2 flex border-slate-100">
             {user?.id === author.id && (
               <button
-                className="mx-5 rounded-md bg-slate-900 p-2 text-slate-300 hover:bg-red-500"
+                className="mx-5 rounded-md bg-slate-900 px-2 text-slate-300 hover:bg-red-500"
                 onClick={() => mutate({ id })}
               >
                 Delete

@@ -42,7 +42,7 @@ export const CommentBar = (props: { id: string }) => {
   return (
     <div className="ml-2">
       <input
-        className=" m-1 h-12 grow rounded-md border border-slate-800 bg-transparent p-1 outline-none active:border-slate-500"
+        className=" m-1 h-auto grow rounded-md border border-slate-800 bg-transparent  outline-none active:border-slate-500"
         placeholder="comment..."
         type="text"
         value={input}
@@ -58,7 +58,7 @@ export const CommentBar = (props: { id: string }) => {
       ></input>
       {input !== "" && !isPosting && (
         <button
-          className="rounded-md bg-gray-800 p-3 text-slate-300 hover:border hover:bg-green-500"
+          className="rounded-md bg-gray-800 px-2 text-slate-300 hover:border hover:bg-green-500"
           onClick={() => mutate({ content: input, postId: props.id })}
         >
           Comment
