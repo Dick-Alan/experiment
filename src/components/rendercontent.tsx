@@ -11,27 +11,29 @@ export const RenderContent = (props: { content: string }) => {
   const text: string[] = unSplitText.split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
   return (
-    <div>
-      <div>
-        {text.map((e: string) => (
-          <span key={e}>
-            {links.includes(e) ? (
-              regex.test(e) ? (
-                <Link href={e}>
-                  <img src={e} className="m-3 h-auto max-w-[300px]" alt={e} />
-                </Link>
-              ) : (
-                <Link
-                  className="text-red-500 underline"
-                  href={`${e}`}
-                >{`${e} `}</Link>
-              )
+    <div className="object-contain">
+      {text.map((e: string) => (
+        <span className="object-contain" key={e}>
+          {links.includes(e) ? (
+            regex.test(e) ? (
+              <Link className="h-auto max-w-[300px] object-contain" href={e}>
+                <img
+                  src={e}
+                  className="hover: m-3 h-auto max-w-[300px]     object-scale-down "
+                  alt={e}
+                />
+              </Link>
             ) : (
-              `${e} `
-            )}
-          </span>
-        ))}
-      </div>
+              <Link
+                className="text-purple-500 underline  hover:text-green-500"
+                href={`${e}`}
+              >{`${e} `}</Link>
+            )
+          ) : (
+            `${e} `
+          )}
+        </span>
+      ))}
     </div>
   );
 };
