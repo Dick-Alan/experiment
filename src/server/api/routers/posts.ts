@@ -125,6 +125,33 @@ export const postsRouter = createTRPCRouter({
       const post = await ctx.prisma.post.findUnique({
         where: { id: postId },
       });
+      const comments = await ctx.prisma.comment.findMany({
+        where: {
+          postId: postId,
+        },
+      });
+      if (!!comments) {
+        for (let i = 0; i < comments.length; i++) {
+          const commentId = comments[i]?.id;
+          const replies = await ctx.prisma.reply.findMany({
+            where: {
+              commentId: commentId,
+            },
+          });
+          if (!!replies) {
+            await ctx.prisma.reply.deleteMany({
+              where: {
+                commentId: commentId,
+              },
+            });
+          }
+        }
+        await ctx.prisma.comment.deleteMany({
+          where: {
+            postId: postId,
+          },
+        });
+      }
       if (!post || post.authorId !== authorId) {
         throw new TRPCError({ code: "FORBIDDEN" });
       }
@@ -222,9 +249,23 @@ export const postsRouter = createTRPCRouter({
       const comment = await ctx.prisma.comment.findUnique({
         where: { id: id },
       });
+      const replies = await ctx.prisma.reply.findMany({
+        where: {
+          commentId: id,
+        },
+      });
+      if (!!replies) {
+        await ctx.prisma.reply.deleteMany({
+          where: {
+            commentId: id,
+          },
+        });
+      }
+
       if (!comment || comment.authorId !== authorId) {
         throw new TRPCError({ code: "FORBIDDEN" });
       }
+
       await ctx.prisma.comment.delete({
         where: {
           id: id,
