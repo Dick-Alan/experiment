@@ -6,7 +6,7 @@ export const PageLayout = (props: PropsWithChildren) => {
       <div className="bg-grey-800 h-full w-full  border-slate-100 md:max-w-2xl">
         {props.children}
 
-        <div className="absolute h-[150px] w-full bg-transparent text-center text-transparent ">
+        <div className="h-[150px] w-full bg-transparent text-center text-transparent ">
           Dick Alan
         </div>
       </div>

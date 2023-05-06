@@ -57,7 +57,7 @@ export const PostView = (props: PostwithUser) => {
   return (
     <div>
       <div
-        className=" relative m-1 flex gap-1 rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900 from-0%  via-black via-5% to-black to-100% p-1 text-left hover:border-slate-300"
+        className="relative m-1 flex gap-1 rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900 from-0%  via-black via-5% to-black to-100% p-1 text-left hover:border-slate-300"
         key={post.id}
         onMouseOver={(e) => setActive(true)}
         onMouseLeave={(e) => {
@@ -82,10 +82,10 @@ export const PostView = (props: PostwithUser) => {
             </span>
           </div>
 
-          <div>
-            <span className="w-4/4 m-4 ml-10 flex rounded-md text-slate-50 ">
+          <div className="w-4/4  max-w-fit ">
+            <div className="w-4/4 m-4 ml-10 rounded-md text-slate-50 ">
               <RenderContent content={post.content} />
-            </span>
+            </div>
           </div>
 
           <Link
