@@ -9,7 +9,7 @@ body {
   padding-bottom: 100px;
 }
 pre {
-  font-family: inherit;
+  font-family: monospace;
 
   white-space: pre-wrap; /* Since CSS 2.1 */
   white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
@@ -18,5 +18,8 @@ pre {
   word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 code {
+  font-family: monospace;
+}
+textarea {
   font-family: monospace;
 }
