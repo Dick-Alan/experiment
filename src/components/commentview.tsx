@@ -116,7 +116,7 @@ export const CommentView = (props: CommentwithUser) => {
               )}
             </button>
             {active ? (
-              <div className="grid-col-2 flex">
+              <div className="grid-col-2">
                 {user?.id === author.id && (
                   <button
                     className="ml-5 rounded-md bg-slate-900 px-2 text-slate-300 hover:bg-red-800"

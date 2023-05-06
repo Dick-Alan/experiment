@@ -42,21 +42,23 @@ export const ReplyBar = (props: { id: string }) => {
 
   return (
     <div className="ml-2">
-      <input
-        className=" m-1 h-12 grow rounded-md border border-slate-800 bg-transparent p-1 outline-none active:border-slate-500"
+      <textarea
+        cols={1}
+        wrap="hard"
+        className=" z-10 m-1 ml-20 h-[150px] w-[300px] grow rounded-sm border-2 border-green-500 bg-gray-900  p-1 outline-none"
         placeholder="reply..."
-        type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (input !== "") {
-              mutate({ content: input, commentId: props.id });
-            }
-          }
-        }}
-      ></input>
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter") {
+        //     e.preventDefault();
+        //     if (input !== "") {
+        //       mutate({ content: input, commentId: props.id });
+        //     }
+        //   }
+        // }}
+      ></textarea>
+
       {input !== "" && !isPosting && (
         <button
           className="rounded-md bg-gray-800 p-3 text-slate-300 hover:border hover:bg-green-500"

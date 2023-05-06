@@ -52,21 +52,22 @@ const CreatePostWizard = () => {
         </div>
       </div>
 
-      <div className=" flex-col-2 ml-8 mt-16 flex h-14 w-auto">
-        <input
-          className=" m-1  h-auto grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
+      <div className="flex h-14 w-auto grid-cols-2">
+        <textarea
+          cols={1}
+          wrap="hard"
+          className=" z-10 m-1 h-[150px] w-[300px] grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
           placeholder="Type message"
-          type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              if (input !== "") {
-                mutate({ content: input });
-              }
-            }
-          }}
+          // onKeyDown={(e) => {
+          //   if (e.key === "Enter") {
+          //     e.preventDefault();
+          //     if (input !== "") {
+          //       mutate({ content: input });
+          //     }
+          //   }
+          // }}
           disabled={isPosting}
         />
         {input !== "" && !isPosting && (

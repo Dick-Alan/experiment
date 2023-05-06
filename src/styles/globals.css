@@ -6,4 +6,17 @@ body {
   @apply font-normal text-slate-500;
   overscroll-behavior: none;
   background-image: linear-gradient(to right, #0f172a, black);
+  padding-bottom: 100px;
+}
+pre {
+  font-family: inherit;
+
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+code {
+  font-family: monospace;
 }

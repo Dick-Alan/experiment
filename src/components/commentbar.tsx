@@ -41,21 +41,22 @@ export const CommentBar = (props: { id: string }) => {
 
   return (
     <div className="ml-2">
-      <input
-        className=" m-1 h-auto grow rounded-md border border-slate-800 bg-transparent  outline-none active:border-slate-500"
+      <textarea
+        cols={1}
+        wrap="hard"
+        className=" z-10 m-1 ml-20 h-[150px] w-[300px] grow rounded-sm border-2 border-green-500 bg-gray-900  p-1 outline-none"
         placeholder="comment..."
-        type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            if (input !== "") {
-              mutate({ content: input, postId: props.id });
-            }
-          }
-        }}
-      ></input>
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter") {
+        //     e.preventDefault();
+        //     if (input !== "") {
+        //       mutate({ content: input, postId: props.id });
+        //     }
+        //   }
+        // }}
+      ></textarea>
       {input !== "" && !isPosting && (
         <button
           className="rounded-md bg-gray-800 px-2 text-slate-300 hover:border hover:bg-green-500"

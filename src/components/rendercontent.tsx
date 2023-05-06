@@ -12,28 +12,30 @@ export const RenderContent = (props: { content: string }) => {
   const regex = new RegExp(`(?:jpg|png)`);
   return (
     <div className="object-contain">
-      {text.map((e: string) => (
-        <span className="object-contain" key={e}>
-          {links.includes(e) ? (
-            regex.test(e) ? (
-              <Link className="h-auto max-w-[300px] object-contain" href={e}>
-                <img
-                  src={e}
-                  className="hover: m-3 h-auto max-w-[300px]     object-scale-down "
-                  alt={e}
-                />
-              </Link>
+      <pre className="font-normal">
+        {text.map((e: string) => (
+          <span className="object-contain font-normal" key={e}>
+            {links.includes(e) ? (
+              regex.test(e) ? (
+                <Link className="h-auto max-w-[300px] object-contain" href={e}>
+                  <img
+                    src={e}
+                    className="hover: m-3 h-auto max-w-[300px]     object-scale-down "
+                    alt={e}
+                  />
+                </Link>
+              ) : (
+                <Link
+                  className="text-purple-500 underline  hover:text-green-500"
+                  href={`${e}`}
+                >{`${e} `}</Link>
+              )
             ) : (
-              <Link
-                className="text-purple-500 underline  hover:text-green-500"
-                href={`${e}`}
-              >{`${e} `}</Link>
-            )
-          ) : (
-            `${e} `
-          )}
-        </span>
-      ))}
+              `${e} `
+            )}
+          </span>
+        ))}
+      </pre>
     </div>
   );
 };
