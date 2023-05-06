@@ -6,7 +6,6 @@ body {
   @apply font-normal text-slate-500;
   overscroll-behavior: none;
   background-image: linear-gradient(to right, #0f172a, black);
-  padding-bottom: 100px;
 }
 pre {
   font-family: monospace;
@@ -21,5 +20,6 @@ code {
   font-family: monospace;
 }
 textarea {
+  resize: both;
   font-family: monospace;
 }

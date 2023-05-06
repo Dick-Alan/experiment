@@ -52,11 +52,11 @@ const CreatePostWizard = () => {
         </div>
       </div>
 
-      <div className="flex h-14 w-auto grid-cols-2">
+      <div className="flex-grid w-full ">
         <textarea
           cols={1}
           wrap="hard"
-          className=" z-10 m-1 h-[150px] w-[300px] grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
+          className=" z-10 m-1 mb-5 h-[150px] w-[300px] grow rounded-sm bg-gray-900 bg-opacity-50 p-1 outline-none"
           placeholder="Type message"
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -70,14 +70,17 @@ const CreatePostWizard = () => {
           // }}
           disabled={isPosting}
         />
-        {input !== "" && !isPosting && (
-          <button
-            className="rounded-md bg-slate-800 px-3 text-slate-300 hover:border hover:bg-green-500"
-            onClick={() => mutate({ content: input })}
-          >
-            Post
-          </button>
-        )}
+
+        <div>
+          {input !== "" && !isPosting && (
+            <button
+              className="rounded-md bg-slate-800 px-3 text-slate-300 hover:border hover:bg-green-500"
+              onClick={() => mutate({ content: input })}
+            >
+              Post
+            </button>
+          )}
+        </div>
 
         {isPosting && (
           <div className="flex justify-center">
