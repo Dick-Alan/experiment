@@ -7,7 +7,10 @@ export const RenderContent = (props: { content: string }) => {
   const [width, setWidth] = useState(0);
   useEffect(() => {
     setWidth(window.innerWidth);
-  });
+    const handleResize = (): void => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const codex = new RegExp(/(?<=``)((.|\n)*)(?=``)/g);
   const codeblock = props.content.match(codex);
@@ -20,7 +23,7 @@ export const RenderContent = (props: { content: string }) => {
   return (
     <div className={` flex gap-1`}>
       <Linkify>
-        <pre className={`max-w-${width > 0 ? screenwidth : "sm"}`}>
+        <pre className={`max-w-${screenwidth}`}>
           {text.map((e: string) =>
             e.includes("$CODEBLOCK") ? (
               <div key={e} className="border border-green-500 p-1">
