@@ -7,7 +7,6 @@ export const RenderContent = (props: { content: string }) => {
     ) || [];
 
   const unSplitText = props.content;
-  var tickcount = 0;
 
   const text: string[] = unSplitText.split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
