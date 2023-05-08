@@ -20,7 +20,7 @@ export const RenderContent = (props: { content: string }) => {
   return (
     <div className={` flex gap-1`}>
       <Linkify>
-        <pre className={`max-w-${screenwidth ? screenwidth : "sm"}`}>
+        <pre className={`max-w-${width > 0 ? screenwidth : "sm"}`}>
           {text.map((e: string) =>
             e.includes("$CODEBLOCK") ? (
               <div key={e} className="border border-green-500 p-1">
