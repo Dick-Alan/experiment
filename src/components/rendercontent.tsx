@@ -1,15 +1,22 @@
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Linkify from "react-linkify";
 import Highlight from "react-highlight";
 export const RenderContent = (props: { content: string }) => {
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    setWidth(window.innerWidth);
+  });
+
   const codex = new RegExp(/(?<=``)((.|\n)*)(?=``)/g);
   const codeblock = props.content.match(codex);
   const text: string[] = props.content.replace(codex, "$CODEBLOCK").split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
-  const screenwidth = window.innerWidth >= 775 ? "xl" : "sm";
-  const fivehundred = 300;
-  console.log(screenwidth, typeof screenwidth, window.innerWidth);
+  const screenwidth = width >= 775 ? "xl" : "sm";
+
+  console.log(screenwidth, typeof screenwidth, window.innerWidth, width);
+
   return (
     <div className={` flex gap-1`}>
       <Linkify>
