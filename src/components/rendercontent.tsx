@@ -4,7 +4,7 @@ import Image from "next/image";
 import Linkify from "react-linkify";
 import Highlight from "react-highlight";
 export const RenderContent = (props: { content: string }) => {
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(300);
   useEffect(() => {
     if (typeof window === undefined) {
       return;
