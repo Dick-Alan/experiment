@@ -6,6 +6,9 @@ import Highlight from "react-highlight";
 export const RenderContent = (props: { content: string }) => {
   const [width, setWidth] = useState(0);
   useEffect(() => {
+    if (typeof window === undefined) {
+      return;
+    }
     setWidth(window.innerWidth);
     const handleResize = (): void => setWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
