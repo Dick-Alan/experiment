@@ -7,11 +7,13 @@ export const RenderContent = (props: { content: string }) => {
   const codeblock = props.content.match(codex);
   const text: string[] = props.content.replace(codex, "$CODEBLOCK").split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
-
+  const screenwidth = window.innerWidth;
+  const fivehundred = 300;
+  console.log(screenwidth, typeof screenwidth);
   return (
-    <div className="flex gap-1">
+    <div className={` flex gap-1`}>
       <Linkify>
-        <pre className="max-w-xl">
+        <pre className={`max-w-${screenwidth >= 775 ? "xl" : "sm"}`}>
           {text.map((e: string) =>
             e.includes("$CODEBLOCK") ? (
               <div key={e} className="border border-green-500 p-1">
