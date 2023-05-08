@@ -37,3 +37,7 @@ textarea {
   background: white;
   border-radius: 5%;
 }
+
+a {
+  color: purple;
+}

@@ -85,7 +85,7 @@ export const CommentView = (props: CommentwithUser) => {
             </span>
           </div>
 
-          <span className="my-5 ml-10 rounded-md text-slate-50 ">
+          <span className="my-5 ml-10 rounded-md text-slate-50 md:max-w-md ">
             <RenderContent content={comment.content} />
           </span>
 

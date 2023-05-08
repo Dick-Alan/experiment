@@ -74,7 +74,7 @@ export const ReplyView = (props: ReplytwithUser) => {
           </span>
         </div>
 
-        <span className="my-5 ml-10 rounded-md text-slate-50 ">
+        <span className="my-5 ml-10 rounded-md text-slate-50 md:max-w-[400px] ">
           <RenderContent content={reply.content} />
         </span>
         {active ? (
