@@ -6,7 +6,7 @@ import Highlight from "react-highlight";
 const useMediaQuery = (width: number) => {
   const [targetReached, setTargetReached] = useState(false);
 
-  const updateTarget = useCallback((e: any) => {
+  const updateTarget = useCallback((e: { matches: any }) => {
     if (e.matches) {
       setTargetReached(true);
     } else {
