@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Linkify from "react-linkify";
 import Highlight from "react-highlight";
+
 export const RenderContent = (props: { content: string }) => {
   const [width, setWidth] = useState(300);
   useEffect(() => {
@@ -14,7 +15,6 @@ export const RenderContent = (props: { content: string }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
   const codex = new RegExp(/(?<=``)((.|\n)*)(?=``)/g);
   const codeblock = props.content.match(codex);
   const text: string[] = props.content.replace(codex, "$CODEBLOCK").split(" ");
@@ -26,7 +26,7 @@ export const RenderContent = (props: { content: string }) => {
   return (
     <div className={` flex gap-1`}>
       <Linkify>
-        <pre className={`max-w-${screenwidth}`}>
+        <pre className={`max-w-sm`}>
           {text.map((e: string) =>
             e.includes("$CODEBLOCK") ? (
               <div key={e} className="border border-green-500 p-1">
