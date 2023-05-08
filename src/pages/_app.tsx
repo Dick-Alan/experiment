@@ -2,7 +2,7 @@ import { type AppType } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "react-hot-toast";
-import "highlight.js/styles/ir-black.css";
+// import "highlight.js/styles/ir-black.css";
 
 import { api } from "~/utils/api";
 import Head from "next/head";
