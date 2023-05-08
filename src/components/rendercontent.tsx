@@ -14,7 +14,7 @@ export const RenderContent = (props: { content: string }) => {
         <pre className="max-w-xl">
           {text.map((e: string) =>
             e.includes("$CODEBLOCK") ? (
-              <div className="border border-green-500 p-1">
+              <div key={e} className="border border-green-500 p-1">
                 <div className="border border-white">
                   <Highlight>{codeblock}</Highlight>
                 </div>
