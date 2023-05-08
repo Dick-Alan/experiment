@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Linkify from "react-linkify";
 import Highlight from "react-highlight";
-const useMediaQuery = (width) => {
+const useMediaQuery = (width: number) => {
   const [targetReached, setTargetReached] = useState(false);
 
   const updateTarget = useCallback((e) => {
