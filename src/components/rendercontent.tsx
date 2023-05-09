@@ -43,7 +43,7 @@ export const RenderContent = (props: { content: string }) => {
   return (
     <div>
       {isBreakpoint ? (
-        <div className={`flex  max-w-sm gap-1`}>
+        <div className={`flex  max-w-xs gap-1`}>
           <Linkify>
             <pre className={``}>
               {text.map((e: string) =>
