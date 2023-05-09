@@ -3,45 +3,22 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Linkify from "react-linkify";
 import Highlight from "react-highlight";
-const useMediaQuery = (width: number) => {
-  const [targetReached, setTargetReached] = useState(false);
 
-  const updateTarget = useCallback((e: { matches: any }) => {
-    if (e.matches) {
-      setTargetReached(true);
-    } else {
-      setTargetReached(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    const media = window.matchMedia(`(max-width: ${width}px)`);
-    media.addEventListener("change", updateTarget);
-
-    // Check on mount (callback is not called until a change occurs)
-    if (media.matches) {
-      setTargetReached(true);
-    }
-
-    return () => media.removeEventListener("change", updateTarget);
-  }, []);
-
-  return targetReached;
-};
 export const RenderContent = (props: { content: string }) => {
-  const isBreakpoint = useMediaQuery(768);
   const codex = new RegExp(/(?<=``)((.|\n)*)(?=``)/g);
+
   const codeblock = props.content.match(codex);
   const text: string[] = props.content.replace(codex, "$CODEBLOCK").split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
-  // const screenwidth = width >= 775 ? "xl" : "sm";
 
-  // console.log(screenwidth, typeof screenwidth, window.innerWidth, width);
+  // const screenwidth = window.innerWidth >= 775 ? "md" : "sm";
+
+  // console.log(screenwidth, window.innerWidth);
 
   return (
     <div className={` flex gap-1`}>
       <Linkify>
-        <pre className={`max-w-${isBreakpoint ? "sm" : "xl"}`}>
+        <pre className={`max-w-sm`}>
           {text.map((e: string) =>
             e.includes("$CODEBLOCK") ? (
               <div key={e} className="border border-green-500 p-1">
