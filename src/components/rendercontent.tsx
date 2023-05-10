@@ -49,7 +49,7 @@ export const RenderContent = (props: { content: string }) => {
       {isBreakpoint ? (
         <div className={`max-w-xs gap-1 `}>
           <Linkify>
-            <pre className={``}>
+            <div className={``}>
               {text.map((e: string) =>
                 e.includes("$CODEBLOCK") ? (
                   <div
@@ -74,22 +74,22 @@ export const RenderContent = (props: { content: string }) => {
                   </span>
                 )
               )}
-            </pre>
+            </div>
           </Linkify>
         </div>
       ) : (
-        <div className={`flex  max-w-xl gap-1`}>
+        <div className={` max-w-xl gap-1`}>
           <Linkify>
-            <pre className={``}>
+            <div className={``}>
               {text.map((e: string) =>
                 e.includes("$CODEBLOCK") ? (
                   <div
                     key={e}
                     className={` rounded-md border border-green-500 p-1`}
                   >
-                    <div className="">
+                    <pre className="">
                       <Highlight>{trimmedBlock}</Highlight>
-                    </div>
+                    </pre>
                   </div>
                 ) : (
                   <span className="object-contain font-normal" key={e}>
@@ -105,7 +105,7 @@ export const RenderContent = (props: { content: string }) => {
                   </span>
                 )
               )}
-            </pre>
+            </div>
           </Linkify>
         </div>
       )}
