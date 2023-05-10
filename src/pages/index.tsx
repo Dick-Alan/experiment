@@ -1,20 +1,18 @@
-import { type NextPage } from "next";
 import Image from "next/image";
-import { PostView } from "~/components/postview";
-import { SignIn, SignOutButton, useUser } from "@clerk/nextjs";
+import Link from "next/link";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { LoadingPage, LoadingSpinner } from "../components/loading";
-import { useState } from "react";
 import toast from "react-hot-toast";
+import { LoadingPage, LoadingSpinner } from "../components/loading";
+import { PageLayout } from "~/components/layout";
+import { PostView } from "~/components/postview";
+import { SignIn, SignOutButton, useUser } from "@clerk/nextjs";
+import { aiRouter } from "~/server/api/routers/ai";
+import { api } from "~/utils/api";
+import { type NextPage } from "next";
+import { useState } from "react";
 
 dayjs.extend(relativeTime);
-
-import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
-import { PageLayout } from "~/components/layout";
-import { promise } from "zod";
-import { aiRouter } from "~/server/api/routers/ai";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -41,8 +39,8 @@ const CreatePostWizard = () => {
 
   if (!user) return null;
   return (
-    <div className="flex-col-2 flex gap-3 rounded-md  border-slate-200 p-1">
-      <div>
+    <div className="flex flex-col gap-3 rounded-md  border-slate-200 p-1">
+      <div className="p-2">
         <div className="text-xl">{user.fullName}</div>
         <Image
           className="mt-5 rounded-full"
@@ -51,7 +49,13 @@ const CreatePostWizard = () => {
           width={56}
           height={56}
         />
-        <div>
+        <div className="flex p-2">
+          <Link
+            className="m-2 rounded-md bg-slate-900 px-3 hover:bg-slate-800"
+            href="/chat"
+          >
+            AI Chat
+          </Link>
           <SignOutButton />
         </div>
       </div>
@@ -64,14 +68,6 @@ const CreatePostWizard = () => {
           placeholder="Type message"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          // onKeyDown={(e) => {
-          //   if (e.key === "Enter") {
-          //     e.preventDefault();
-          //     if (input !== "") {
-          //       mutate({ content: input });
-          //     }
-          //   }
-          // }}
           disabled={isPosting}
         />
 

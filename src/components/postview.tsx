@@ -1,25 +1,16 @@
 import Image from "next/image";
-
 import Link from "next/link";
-import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useState } from "react";
-
 import toast from "react-hot-toast";
-
-dayjs.extend(relativeTime);
-
-import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
-import { PageLayout } from "~/components/layout";
-import { RequestCookiesAdapter } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { object } from "zod";
-import { CommentView } from "./commentview";
-import { comment } from "postcss";
 import { CommentBar } from "./commentbar";
+import { CommentView } from "./commentview";
 import { RenderContent } from "./rendercontent";
-
+import { SignIn, SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { api } from "~/utils/api";
+import { useState } from "react";
+dayjs.extend(relativeTime);
 type PostwithUser = RouterOutputs["posts"]["getAll"][number];
 
 export const PostView = (props: PostwithUser) => {
