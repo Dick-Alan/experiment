@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import { api } from "../utils/api";
+import { useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import { useRef, useState } from "react";
 import { ChatContent, type ChatItem } from "../components/chatcontent";
@@ -9,7 +10,8 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
   const [chatItems, setChatItems] = useState<ChatItem[]>([]);
   const [waiting, setWaiting] = useState<boolean>(false);
   const scrollToRef = useRef<HTMLDivElement>(null);
-
+  const { user } = useUser();
+  const name = user?.fullName || "guest";
   const scrollToBottom = () => {
     setTimeout(
       () => scrollToRef.current?.scrollIntoView({ behavior: "smooth" }),
@@ -54,7 +56,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
       ...chatItems,
       {
         content: prompt.replace(/\n/g, "\n\n"),
-        author: "User",
+        author: name,
       },
     ]);
 
@@ -71,11 +73,11 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
   return (
     <>
       <Head>
-        <title>AI Chat Playground</title>
+        <title>AI Chat</title>
         <meta name="description" content="AI Chat Playground" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex h-screen flex-col items-center bg-gray-800">
+      <div className="flex h-screen flex-col items-center bg-slate-800">
         <section className="w-full"></section>
 
         <section className="w-full flex-grow overflow-y-scroll">
