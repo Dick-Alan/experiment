@@ -3,6 +3,8 @@ import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Linkify from "react-linkify";
 import Highlight from "react-highlight";
+
+// media query for grabbing client screen size
 const useMediaQuery = (width: number) => {
   const [targetReached, setTargetReached] = useState(false);
 
@@ -30,28 +32,33 @@ const useMediaQuery = (width: number) => {
 };
 export const RenderContent = (props: { content: string }) => {
   const isBreakpoint = useMediaQuery(768) || false;
-  const codex = new RegExp(/(?<=``)((.|\n)*)(?=``)/g);
+  const codex = new RegExp(/(```)((.|\n)*)(```)/g);
 
   const codeblock = props.content.match(codex);
-  const text: string[] = props.content.replace(codex, "$CODEBLOCK").split(" ");
+  const trimmedBlock = codeblock
+    ? codeblock[0].substring(3, codeblock[0].length - 3)
+    : "";
+  const text: string[] = props.content
+    .replace(codex, "   $CODEBLOCK   ")
+    .split(" ");
   const regex = new RegExp(`(?:jpg|png)`);
 
-  // const screenwidth = window.innerWidth >= 775 ? "md" : "sm";
-
-  // console.log(screenwidth, window.innerWidth);
-  console.log(isBreakpoint);
   return (
-    <div>
+    // conditional rendering based on client screen size
+    <div className="flex flex-col ">
       {isBreakpoint ? (
-        <div className={`flex  max-w-xs gap-1`}>
+        <div className={`max-w-xs gap-1 `}>
           <Linkify>
             <pre className={``}>
               {text.map((e: string) =>
                 e.includes("$CODEBLOCK") ? (
-                  <div key={e} className={` border border-green-500 p-1`}>
-                    <div className="border border-white">
-                      <Highlight>{codeblock}</Highlight>
-                    </div>
+                  <div
+                    key={e}
+                    className={`rounded-md border border-green-500 p-1`}
+                  >
+                    <pre className="">
+                      <Highlight>{trimmedBlock}</Highlight>
+                    </pre>
                   </div>
                 ) : (
                   <span className="object-contain font-normal" key={e}>
@@ -76,9 +83,12 @@ export const RenderContent = (props: { content: string }) => {
             <pre className={``}>
               {text.map((e: string) =>
                 e.includes("$CODEBLOCK") ? (
-                  <div key={e} className={` border border-green-500 p-1`}>
-                    <div className="border border-white">
-                      <Highlight>{codeblock}</Highlight>
+                  <div
+                    key={e}
+                    className={` rounded-md border border-green-500 p-1`}
+                  >
+                    <div className="">
+                      <Highlight>{trimmedBlock}</Highlight>
                     </div>
                   </div>
                 ) : (

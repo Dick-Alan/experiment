@@ -13,11 +13,15 @@ dayjs.extend(relativeTime);
 import { api } from "~/utils/api";
 import type { RouterOutputs } from "~/utils/api";
 import { PageLayout } from "~/components/layout";
+import { promise } from "zod";
+import { aiRouter } from "~/server/api/routers/ai";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
   const [input, setInput] = useState("");
+
   const ctx = api.useContext();
+  const [useAi, setUseAi] = useState(false);
   const [signInClicked, setSignInClicked] = useState(false);
   const { mutate, isLoading: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
@@ -73,12 +77,14 @@ const CreatePostWizard = () => {
 
         <div>
           {input !== "" && !isPosting && (
-            <button
-              className="rounded-md bg-slate-800 px-3 text-slate-300 hover:border hover:bg-green-500"
-              onClick={() => mutate({ content: input })}
-            >
-              Post
-            </button>
+            <div>
+              <button
+                className="rounded-md bg-slate-800 px-3 text-slate-300 hover:border hover:bg-green-500"
+                onClick={() => mutate({ content: input })}
+              >
+                Post
+              </button>
+            </div>
           )}
         </div>
 

@@ -26,6 +26,7 @@ textarea {
   max-width: 550px;
 
   font-family: monospace;
+
   overflow: auto;
 }
 ::-webkit-scrollbar {

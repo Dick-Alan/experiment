@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { postsRouter } from "./routers/posts";
-
+import { aiRouter } from "./routers/ai";
 import { profileRouter } from "./routers/profile";
 
 /**
@@ -10,7 +10,7 @@ import { profileRouter } from "./routers/profile";
  */
 export const appRouter = createTRPCRouter({
   posts: postsRouter,
-
+  ai: aiRouter,
   profile: profileRouter,
 });
 

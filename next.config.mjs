@@ -11,6 +11,16 @@ const config = {
     domains: ["images.clerk.dev"],
   },
 
+  // module.exports = {
+  //   webpack: (config) => {
+  //     // this will override the experiments
+  //     config.experiments = { ...config.experiments, topLevelAwait: true };
+  //     // this will just update topLevelAwait property of config.experiments
+  //     // config.experiments.topLevelAwait = true
+  //     return config;
+  //   },
+  // };
+
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
    * out.

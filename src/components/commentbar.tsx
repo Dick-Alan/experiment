@@ -12,7 +12,6 @@ import { CommentView } from "~/components/commentview";
 dayjs.extend(relativeTime);
 
 import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
 
 import type { GetStaticProps } from "next";
 
@@ -21,7 +20,9 @@ import { PageLayout } from "~/components/layout";
 export const CommentBar = (props: { id: string }) => {
   const [input, setInput] = useState("");
   const { user } = useUser();
+
   const ctx = api.useContext();
+
   const { mutate, isLoading: isPosting } = api.posts.createComment.useMutation({
     onSuccess: () => {
       setInput("");
@@ -37,6 +38,7 @@ export const CommentBar = (props: { id: string }) => {
       }
     },
   });
+
   if (!user) return null;
 
   return (
@@ -58,12 +60,14 @@ export const CommentBar = (props: { id: string }) => {
         // }}
       ></textarea>
       {input !== "" && !isPosting && (
-        <button
-          className="rounded-md bg-gray-800 px-2 text-slate-300 hover:border hover:bg-green-500"
-          onClick={() => mutate({ content: input, postId: props.id })}
-        >
-          Comment
-        </button>
+        <div>
+          <button
+            className="rounded-md bg-gray-800 px-2 text-slate-300 hover:border hover:bg-green-500"
+            onClick={() => mutate({ content: input, postId: props.id })}
+          >
+            Comment
+          </button>
+        </div>
       )}
     </div>
   );

@@ -82,8 +82,8 @@ export const PostView = (props: PostwithUser) => {
             </span>
           </div>
 
-          <div className="w-4/4  max-w-fit ">
-            <div className="w-4/4 m-4 ml-10 rounded-md text-slate-50 ">
+          <div className="w-4/4  flex max-w-fit">
+            <div className="w-4/4 m-4 ml-10 flex rounded-md text-slate-50 ">
               <RenderContent content={post.content} />
             </div>
           </div>
