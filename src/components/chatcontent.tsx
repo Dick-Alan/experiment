@@ -16,7 +16,7 @@ export const ChatContent = ({ chatItems }: Props) => (
     {chatItems.map((chatItem, index) => (
       <div key={index}>
         <div className="container mx-auto mt-2 flex max-w-3xl">
-          <div className="mx-2 rounded-md bg-slate-900 px-2 text-slate-200">
+          <div className="mx-2 h-[26px] rounded-md bg-slate-900 px-2 text-purple-700">
             {chatItem.author}:
           </div>
 

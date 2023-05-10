@@ -21,11 +21,11 @@ export const ChatInput = ({ onUpdate, onReset, waiting }: Props) => {
   };
 
   return (
-    <div className=" flex grid-cols-2 flex-col border-t-4 border-t-purple-600 bg-slate-900 py-2">
+    <div className="w-full flex-col  items-center rounded-md border-2 border-lime-600 bg-black   p-5 py-2">
       <div className="container mx-auto ">
         <div className=" flex">
           <textarea
-            className="h-auto w-3/4"
+            className="h-auto w-full bg-slate-900"
             placeholder="Enter a prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
