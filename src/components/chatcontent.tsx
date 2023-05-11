@@ -15,12 +15,13 @@ export const ChatContent = ({ chatItems }: Props) => (
   <>
     {chatItems.map((chatItem, index) => (
       <div key={index}>
-        <div className="container mx-auto mt-2 flex max-w-3xl">
-          <div className="mx-2 h-[26px] rounded-md bg-slate-900 px-2 text-purple-700">
+        <div className="container ml-8 mt-2 flex max-w-3xl grid-cols-2 p-2">
+          <div className=" flex h-[26px] w-[140px]  px-2 text-purple-700">
             {chatItem.author}:
           </div>
-
-          <RenderContent content={chatItem.content}></RenderContent>
+          <div className="ml-10">
+            <RenderContent content={chatItem.content}></RenderContent>
+          </div>
         </div>
       </div>
     ))}

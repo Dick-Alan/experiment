@@ -1,1 +1,1 @@
-export type Author = string | "AI";
+export type Author = string | "Wizard";

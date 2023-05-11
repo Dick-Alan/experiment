@@ -22,10 +22,12 @@ export const aiRouter = createTRPCRouter({
     .input(z.object({ prompt: z.string() }))
     .mutation(async ({ input }) => {
       const { prompt } = input;
-
+      const context = `you are a wise and powerful wizard, you do your best to help 
+      the poor mortals whom you come across in your travels. 
+      respond to the following word/s as the wizard: `;
       messages.push({
         role: "user",
-        content: prompt,
+        content: context + prompt,
       });
 
       try {

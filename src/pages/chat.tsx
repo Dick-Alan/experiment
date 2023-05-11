@@ -25,7 +25,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
         ...chatItems,
         {
           content: data.generatedText,
-          author: "AI",
+          author: "Wizard",
         },
       ]);
     },
@@ -35,7 +35,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
         ...chatItems,
         {
           content: error.message ?? "An error occurred",
-          author: "AI",
+          author: "Wizard",
           isError: true,
         },
       ]);
@@ -80,7 +80,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
       <div className="flex h-screen flex-col items-center bg-black text-lime-600">
         <section className="w-full"></section>
 
-        <section className="relative m-1 flex w-3/4 flex-grow flex-col gap-1 overflow-y-scroll rounded-2xl border-x-4 border-y border-slate-800 bg-gradient-to-r from-slate-900 from-0%  via-black via-5% to-black to-100% p-1 text-left ">
+        <section className="relative m-1 flex w-3/4 flex-grow flex-col gap-1 overflow-y-scroll rounded-2xl bg-gradient-to-r from-slate-900 from-0%  via-black via-5% to-black to-100% p-1 text-left ">
           <ChatContent chatItems={chatItems} />
           <div ref={scrollToRef} />
         </section>

@@ -25,8 +25,8 @@ export const ChatInput = ({ onUpdate, onReset, waiting }: Props) => {
       <div className="container mx-auto ">
         <div className=" flex">
           <textarea
-            className="h-auto w-full bg-slate-900"
-            placeholder="Enter a prompt"
+            className="h-auto w-full bg-slate-900 p-2"
+            placeholder="Ask the wizard..."
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => {
