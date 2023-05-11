@@ -22,13 +22,27 @@ export const aiRouter = createTRPCRouter({
     .input(z.object({ prompt: z.string() }))
     .mutation(async ({ input }) => {
       const { prompt } = input;
-      const context = `you are a wise and powerful wizard, you do your best to help 
-      the poor mortals whom you come across in your travels. 
-      respond to the following word/s as the wizard: `;
+      const context = `You are the dungeon master in a DnD type roleplaying 
+      game called
+      Eternal.
+    you will guide the player on an adventure. You will adhere to the rules and 
+    practices of a good dungeon master. Always present the player with
+      a list of options. ALWAYS surround the list of options in triple back-tics.
+      Just like you would encase a section of code. Always number the list of 
+      options and be sure to surround the list with triple back-tics`;
+      messages.push({
+        role: "system",
+        content: context,
+      });
       messages.push({
         role: "user",
-        content: context + prompt,
+        content: prompt,
       });
+      console.log(messages);
+      if (messages.length > 10) {
+        console.log(messages.length);
+        messages.shift();
+      }
 
       try {
         const completion = await openai.createChatCompletion({
@@ -65,6 +79,8 @@ export const aiRouter = createTRPCRouter({
     }),
 
   reset: publicProcedure.mutation(() => {
-    messages.length = 0;
+    //messages.length = 0;
+    messages.shift();
+    console.log(messages);
   }),
 });

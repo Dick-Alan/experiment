@@ -44,7 +44,7 @@ export const ChatInput = ({ onUpdate, onReset, waiting }: Props) => {
             onClick={onReset}
             disabled={waiting}
           >
-            Reset
+            Reduce Tokens
           </button>
           <button
             className="mx-2 rounded-md bg-slate-600 px-2 text-slate-200 hover:bg-slate-800"

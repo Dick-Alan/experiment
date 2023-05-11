@@ -25,7 +25,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
         ...chatItems,
         {
           content: data.generatedText,
-          author: "Wizard",
+          author: "🧙‍♂️",
         },
       ]);
     },
@@ -35,7 +35,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
         ...chatItems,
         {
           content: error.message ?? "An error occurred",
-          author: "Wizard",
+          author: "🧙‍♂️",
           isError: true,
         },
       ]);
@@ -66,7 +66,7 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
   };
 
   const handleReset = () => {
-    setChatItems([]);
+    setChatItems(chatItems.slice(1, chatItems.length));
     resetMutation.mutate();
   };
 
@@ -78,7 +78,9 @@ const Chat: NextPage<{ id: string }> = ({ id }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex h-screen flex-col items-center bg-black text-lime-600">
-        <section className="w-full"></section>
+        <section className="w-full">
+          Context length = {chatItems.length} messages
+        </section>
 
         <section className="relative m-1 flex w-3/4 flex-grow flex-col gap-1 overflow-y-scroll rounded-2xl bg-gradient-to-r from-slate-900 from-0%  via-black via-5% to-black to-100% p-1 text-left ">
           <ChatContent chatItems={chatItems} />
