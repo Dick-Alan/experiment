@@ -25,11 +25,11 @@ export const aiRouter = createTRPCRouter({
       const context = `You are the dungeon master in a DnD type roleplaying 
       game called
       Eternal.
-    you will guide the player on an adventure. You will adhere to the rules and 
-    practices of a good dungeon master. Always present the player with
-      a list of options. ALWAYS surround the list of options in triple back-tics.
-      Just like you would encase a section of code. Always number the list of 
-      options and be sure to surround the list with triple back-tics`;
+    you will guide the player on an adventure. 
+    At the end of your statement, always present the player with a numbered list
+    of options and it is very import that this list is wrapped in triple back ticks
+    like so \`\`\` {optionsList} \`\`\`. 
+      `;
       messages.push({
         role: "system",
         content: context,
@@ -38,16 +38,17 @@ export const aiRouter = createTRPCRouter({
         role: "user",
         content: prompt,
       });
-      console.log(messages);
-      if (messages.length > 10) {
-        console.log(messages.length);
+
+      while (messages.length > 6) {
         messages.shift();
+        console.log(messages.length);
       }
 
       try {
         const completion = await openai.createChatCompletion({
           model: "gpt-3.5-turbo",
           messages,
+          temperature: 0.5,
         });
 
         const generatedText = completion.data.choices[0]?.message?.content;
@@ -81,6 +82,6 @@ export const aiRouter = createTRPCRouter({
   reset: publicProcedure.mutation(() => {
     //messages.length = 0;
     messages.shift();
-    console.log(messages);
+    console.log(messages.length);
   }),
 });
